@@ -1,0 +1,35 @@
+# Production environment configuration
+server.port=8080
+
+# Database configuration
+spring.datasource.url=jdbc:mysql://your-production-db-host:3306/parcelpulse?useSSL=true&serverTimezone=UTC
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+spring.datasource.username=db_username
+spring.datasource.password=db_password
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=false
+
+# Logging configuration
+logging.level.root=WARN
+logging.level.com.parcelpulseapi=INFO
+logging.file.name=/var/log/parcelpulse/application.log
+
+# Swagger/OpenAPI Configuration
+# Disable Swagger in production
+springdoc.api-docs.enabled=false
+springdoc.swagger-ui.enabled=false
+
+# JWT Configuration
+app.jwt.secret=REPLACE_WITH_SECURE_PRODUCTION_KEY
+app.jwt.expiration=86400000  # 24 hours in milliseconds
+
+# HTTPS configuration
+server.ssl.enabled=true
+server.ssl.key-store=classpath:keystore.p12
+server.ssl.key-store-password=your_keystore_password
+server.ssl.key-store-type=PKCS12
+server.ssl.key-alias=parcelpulse
+
+# CORS Configuration
+app.cors.allowedOrigins=https://parcelpulse.com,https://www.parcelpulse.com
