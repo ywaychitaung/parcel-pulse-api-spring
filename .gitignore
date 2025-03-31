@@ -35,3 +35,6 @@ build/
 ### application properties ###
 application-local.properties
 application-prod.properties
+
+### macOS files ###
+.DS_Store
