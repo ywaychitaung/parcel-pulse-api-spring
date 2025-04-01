@@ -27,7 +27,7 @@ public class DeliveryPreference {
     @Column(nullable = false)
     private boolean notifyByEmail = false;
     
-    @Column(nullable = false)
+    @Column(name = "notify_by_sms", nullable = false)
     private boolean notifyBySMS = false;
     
     private String alternativeAddress;

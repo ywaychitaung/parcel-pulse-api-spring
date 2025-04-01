@@ -98,7 +98,7 @@ public class ParcelApiController {
 
     @GetMapping("/tracking/{trackingNumber}")
     @Operation(summary = "Get parcel by tracking number", description = "Get a specific parcel by its tracking number")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    // Remove the @PreAuthorize annotation to make it public
     public ResponseEntity<ParcelResponse> getParcelByTrackingNumber(
             @Parameter(description = "Tracking Number", required = true)
             @PathVariable String trackingNumber) {

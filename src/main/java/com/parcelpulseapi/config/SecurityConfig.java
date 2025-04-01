@@ -1,7 +1,7 @@
 package com.parcelpulseapi.config;
 
-import com.parcelpulseapi.security.JwtAuthenticationEntryPoint;
-import com.parcelpulseapi.security.JwtAuthenticationFilter;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import com.parcelpulseapi.security.JwtAuthenticationEntryPoint;
+import com.parcelpulseapi.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -51,14 +52,19 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints
-                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/").permitAll()
-                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/api/parcels/tracking/**",  // Add this line to make tracking public
+                    "/swagger-ui/**", 
+                    "/v3/api-docs/**", 
+                    "/swagger-ui.html", 
+                    "/",
+                    "/api/public/**"
+                ).permitAll()
                 // Protected endpoints
                 .anyRequest().authenticated()
             );
         
-        // Add JWT filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
@@ -67,9 +73,17 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Changed from setAllowedOrigins
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowedHeaders(Arrays.asList(
+            "Authorization", 
+            "Content-Type", 
+            "X-Requested-With",
+            "Accept",
+            "Origin",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
+        ));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
