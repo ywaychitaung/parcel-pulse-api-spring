@@ -41,21 +41,23 @@ public class AuthRequest {
      */
     public static class RegisterRequest {
         @NotBlank
-        @Size(min = 3, max = 50)
+        @Size(min = 3, max = 40)
         private String name;
 
         @NotBlank
-        @Size(min = 3, max = 20)
+        @Size(min = 3, max = 15)
         private String username;
 
         @NotBlank
-        @Size(max = 50)
+        @Size(max = 40)
         @Email
         private String email;
 
         @NotBlank
         @Size(min = 6, max = 20)
         private String password;
+
+        private Long roleId;
 
         public String getName() {
             return name;
@@ -87,6 +89,14 @@ public class AuthRequest {
 
         public void setPassword(String password) {
             this.password = password;
+        }
+
+        public Long getRoleId() {
+            return roleId;
+        }
+
+        public void setRoleId(Long roleId) {
+            this.roleId = roleId;
         }
     }
 }

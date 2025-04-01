@@ -1,5 +1,7 @@
 package com.parcelpulseapi.service.implementation;
 
+import java.util.Collections;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,8 +22,6 @@ import com.parcelpulseapi.repository.UserRepository;
 import com.parcelpulseapi.security.JwtTokenProvider;
 import com.parcelpulseapi.security.UserPrincipal;
 import com.parcelpulseapi.service.interfaces.IAuthService;
-
-import java.util.Collections;
 
 @Service
 public class AuthService implements IAuthService {
@@ -45,6 +45,13 @@ public class AuthService implements IAuthService {
         this.tokenProvider = tokenProvider;
     }
 
+    private String getUserRole(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .findFirst()
+                .map(authority -> authority.getAuthority().replace("ROLE_", ""))
+                .orElse("USER");
+    }
+
     @Override
     public AuthResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -56,7 +63,8 @@ public class AuthService implements IAuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
-        return new AuthResponse(jwt);
+        String role = getUserRole(authentication);
+        return new AuthResponse(jwt, role);
     }
 
     @Override
@@ -68,30 +76,40 @@ public class AuthService implements IAuthService {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new BadRequestException("Email is already in use!");
         }
-
+    
+        // Validate roleId
+        Long roleId = registerRequest.getRoleId();
+        if (roleId != 1 && roleId != 3) {
+            throw new BadRequestException("Invalid role selection. Only User (1) or Courier (3) roles are allowed.");
+        }
+    
         User user = new User(
                 registerRequest.getName(),
                 registerRequest.getUsername(),
                 registerRequest.getEmail(),
                 passwordEncoder.encode(registerRequest.getPassword())
         );
-
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("User Role not set."));
-
+    
+        // Map roleId to RoleName
+        RoleName roleName = (roleId == 1) ? RoleName.ROLE_USER : RoleName.ROLE_COURIER;
+        
+        Role userRole = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new RuntimeException("Role not found."));
+    
         user.setRoles(Collections.singleton(userRole));
         userRepository.save(user);
-
+    
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         registerRequest.getUsername(),
                         registerRequest.getPassword()
                 )
         );
-
+    
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
-        return new AuthResponse(jwt);
+        String role = getUserRole(authentication);
+        return new AuthResponse(jwt, role);
     }
 
     @Override

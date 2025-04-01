@@ -26,7 +26,10 @@ public class AuthApiController {
     }
 
     @PostMapping("/register")
-    @Operation(summary = "Register user", description = "Register a new user account")
+    @Operation(
+        summary = "Register user",
+        description = "Register a new user account. roleId: 1 for User, 3 for Courier. Admin role (2) is restricted."
+    )
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(authService.registerUser(registerRequest));
     }

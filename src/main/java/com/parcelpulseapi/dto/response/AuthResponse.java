@@ -2,10 +2,11 @@ package com.parcelpulseapi.dto.response;
 
 public class AuthResponse {
     private String accessToken;
-    private String tokenType = "Bearer";
+    private String role;
 
-    public AuthResponse(String accessToken) {
+    public AuthResponse(String accessToken, String role) {
         this.accessToken = accessToken;
+        this.role = role;
     }
 
     public String getAccessToken() {
@@ -16,11 +17,11 @@ public class AuthResponse {
         this.accessToken = accessToken;
     }
 
-    public String getTokenType() {
-        return tokenType;
+    public String getRole() {
+        return role;
     }
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+    public void setRole(String role) {
+        this.role = role;
     }
 }
