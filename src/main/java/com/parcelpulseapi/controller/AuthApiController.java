@@ -1,19 +1,8 @@
 package com.parcelpulseapi.controller;
 
-import com.parcelpulseapi.dto.responses.ApiResponse;
-import com.parcelpulseapi.dto.responses.AuthResponse;
-import com.parcelpulseapi.dto.requests.AuthRequest.LoginRequest;
-import com.parcelpulseapi.dto.requests.AuthRequest.RegisterRequest;
-import com.parcelpulseapi.model.Role;
-import com.parcelpulseapi.model.RoleName;
-import com.parcelpulseapi.model.User;
-import com.parcelpulseapi.repository.RoleRepository;
-import com.parcelpulseapi.repository.UserRepository;
-import com.parcelpulseapi.security.JwtTokenProvider;
-import com.parcelpulseapi.security.UserPrincipal;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +11,28 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.Collections;
+import com.parcelpulseapi.dto.request.AuthRequest.LoginRequest;
+import com.parcelpulseapi.dto.request.AuthRequest.RegisterRequest;
+import com.parcelpulseapi.dto.response.ApiResponse;
+import com.parcelpulseapi.dto.response.AuthResponse;
+import com.parcelpulseapi.model.Role;
+import com.parcelpulseapi.model.RoleName;
+import com.parcelpulseapi.model.User;
+import com.parcelpulseapi.repository.RoleRepository;
+import com.parcelpulseapi.repository.UserRepository;
+import com.parcelpulseapi.security.JwtTokenProvider;
+import com.parcelpulseapi.security.UserPrincipal;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")

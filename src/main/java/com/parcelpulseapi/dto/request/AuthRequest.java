@@ -1,4 +1,4 @@
-package com.parcelpulseapi.dto.requests;
+package com.parcelpulseapi.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

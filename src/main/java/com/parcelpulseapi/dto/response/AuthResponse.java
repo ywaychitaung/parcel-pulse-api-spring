@@ -1,4 +1,4 @@
-package com.parcelpulseapi.dto.responses;
+package com.parcelpulseapi.dto.response;
 
 public class AuthResponse {
     private String accessToken;
