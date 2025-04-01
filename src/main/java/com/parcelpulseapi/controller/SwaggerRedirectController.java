@@ -19,6 +19,6 @@ public class SwaggerRedirectController {
     
     @EventListener(ApplicationReadyEvent.class)
     public void applicationReady() {
-        logger.info("Application is ready! Access Swagger UI at: http://localhost:8080/swagger-ui.html");
+        logger.info("Application is ready! Access Swagger UI at: https://parcel-pulse-api-spring-qd8aw.ondigitalocean.app/swagger-ui.html");
     }
 }
