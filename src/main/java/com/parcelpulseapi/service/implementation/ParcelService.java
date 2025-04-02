@@ -1,16 +1,5 @@
 package com.parcelpulseapi.service.implementation;
 
-import com.parcelpulseapi.dto.request.ParcelRequest;
-import com.parcelpulseapi.dto.response.ParcelResponse;
-import com.parcelpulseapi.exception.ResourceNotFoundException;
-import com.parcelpulseapi.model.Parcel;
-import com.parcelpulseapi.model.User;
-import com.parcelpulseapi.repository.ParcelRepository;
-import com.parcelpulseapi.service.interfaces.IParcelService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,6 +7,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.parcelpulseapi.dto.request.ParcelRequest;
+import com.parcelpulseapi.dto.response.ParcelResponse;
+import com.parcelpulseapi.exception.ResourceNotFoundException;
+import com.parcelpulseapi.model.Parcel;
+import com.parcelpulseapi.model.User;
+import com.parcelpulseapi.repository.ParcelRepository;
+import com.parcelpulseapi.service.interfaces.IParcelService;
 
 @Service
 @Transactional
@@ -39,6 +40,8 @@ public class ParcelService implements IParcelService {
         parcel.setUser(currentUser);
         parcel.setTrackingNumber(generateTrackingNumber());
         parcel.setStatus("PENDING");
+        parcel.setCreatedAt(LocalDateTime.now()); 
+        parcel.setUpdatedAt(LocalDateTime.now());  
         updateParcelFromRequest(parcel, request);
         return mapToResponse(parcelRepository.save(parcel));
     }

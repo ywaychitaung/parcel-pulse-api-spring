@@ -31,7 +31,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/parcels")
-@Tag(name = "Parcels", description = "Parcel management API")
+@Tag(name = "Parcels", description = "Parcel Management API")
 @SecurityRequirement(name = "bearerAuth")
 @ApiResponses(value = {
     @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -48,8 +48,8 @@ public class ParcelApiController {
 
     @PostMapping
     @Operation(summary = "Create a new parcel", description = "Create a new parcel with the given details")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<ParcelResponse> createParcel(@Valid @RequestBody ParcelRequest request) {
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")  // Update this line
+    public ResponseEntity<?> createParcel(@Valid @RequestBody ParcelRequest request) {
         return ResponseEntity.ok(parcelService.createParcel(request));
     }
 
