@@ -65,7 +65,7 @@ parcelpulse/
 │   │   └── test/
 │   └── pom.xml
 │
-├── ParcelPulseWeb/               # Vue 3 frontend
+├── ParcelPulseWeb/               # Vue frontend
 │   ├── public/
 │   ├── src/
 │   │   ├── assets/
